@@ -29,7 +29,7 @@ namespace Cliver
             {
                 Console.WriteLine("\n* " + date);
                 DateTimeRoutines.ParsedDateTime dt;
-                if (DateTimeRoutines.TryParse(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out dt))
+                if (DateTimeRoutines.TryParseDateOrTime(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out dt))
                 {
                     if (dt.IsDateFound)
                         Console.WriteLine("Date was found: " + dt.DateTime.ToString());
@@ -123,7 +123,7 @@ namespace Cliver
                         }
                         break;
                     case TestFormat.DATE_TIME:
-                        if (DateTimeRoutines.TryParse(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
+                        if (DateTimeRoutines.TryParseDateOrTime(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
                             if (t.DateTime != test.answer)
                             {
                                 Console.WriteLine(">>>>>> ERROR: " + t.DateTime.ToString() + " <> " + test.answer.ToString());
