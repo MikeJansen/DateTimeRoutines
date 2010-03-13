@@ -18,6 +18,7 @@ namespace Cliver
             test(TestFormat.DATE_TIME);
             test(TestFormat.DATE);
             test(TestFormat.TIME);
+            Console.WriteLine("TOTAL ERRORS: " + total_errors.ToString() + "\n\n");
 
             Console.WriteLine("\n##################################   USAGE SAMPLE");
             ArrayList dates = new ArrayList();
@@ -38,7 +39,6 @@ namespace Cliver
                 else
                     Console.WriteLine("Date was not found");
             }
-            Console.WriteLine("\n\n\nTOTAL ERRORS: " + total_errors.ToString() + "\n\n");
 
             Console.WriteLine("\nPress any key to exit.");
             Console.ReadKey();
