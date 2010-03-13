@@ -4,13 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{23D5F42D-6C57-4D27-ACA9-596004676401}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{E7A4574E-0410-4A8E-9647-A229589CCF32}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DateTimeRoutines</RootNamespace>
-    <AssemblyName>DateTimeRoutines</AssemblyName>
-    <StartupObject>
-    </StartupObject>
+    <RootNamespace>Test</RootNamespace>
+    <AssemblyName>Test</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +18,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DateTimeRoutines.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,10 +30,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeRoutines.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_testing_static_threads.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DateTimeRoutines.csproj">
+      <Project>{23D5F42D-6C57-4D27-ACA9-596004676401}</Project>
+      <Name>DateTimeRoutines</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

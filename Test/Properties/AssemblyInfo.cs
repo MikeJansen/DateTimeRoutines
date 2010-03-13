@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DateTimeRoutines")]
+[assembly: AssemblyTitle("Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sergey Stoyan, CliverSoft.com")]
-[assembly: AssemblyProduct("DateTimeRoutines")]
-[assembly: AssemblyCopyright("public domain code")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Test")]
+[assembly: AssemblyCopyright("Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4016b99d-d901-433c-a046-37a42ae12fa5")]
+[assembly: Guid("f3058116-8b9a-4b05-affc-04ad0d526e2a")]
 
 // Version information for an assembly consists of the following four values:
 //
