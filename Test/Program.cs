@@ -75,7 +75,7 @@ namespace Cliver
             dates.Add(new DTTest(@"The day 07/31/07 14:16:32 is ", new DateTime(2007, 7, 31, 14, 16, 32)));
             dates.Add(new DTTest(@"Shipping is on us until December 24, 2008 within the U.S. ", new DateTime(2008, 12, 24, 0, 0, 0)));
             dates.Add(new DTTest(@" 2008 within the U.S. at 14:16:32", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 14, 16, 32)));
-            dates.Add(new DTTest(@"5th November, 1994, 8:15:30 pm", new DateTime(1994, 11, 5, 8, 15, 30)));
+            dates.Add(new DTTest(@"5th November, 1994, 8:15:30 pm", new DateTime(1994, 11, 5, 20, 15, 30)));
             dates.Add(new DTTest(@"7 boxes January 31 , 14:16:32.", new DateTime(DateTime.Now.Year, 1, 31, 14, 16, 32)));
             dates.Add(new DTTest(@"the blue sky of Sept  30th  2008 14:16:32", new DateTime(2008, 9, 30, 14, 16, 32)));
             dates.Add(new DTTest(@" e.g. 1997-07-16T19:20:30+01:00", new DateTime(1997, 7, 16, 19, 20, 30)));

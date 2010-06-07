@@ -316,14 +316,14 @@ namespace Cliver
             if (parsed_date != null && parsed_date.IndexOfDate > -1)
             {//look around the found date
                 //look for <date> [h]h:mm[:ss] [PM/AM]
-                m = Regex.Match(str.Substring(parsed_date.IndexOfDate + parsed_date.LengthOfDate), @"(?<=^\s*,?\s+|^\s*at\s*|^\s*[T\-]\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*([AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str.Substring(parsed_date.IndexOfDate + parsed_date.LengthOfDate), @"(?<=^\s*,?\s+|^\s*at\s*|^\s*[T\-]\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 if (!m.Success)
                     //look for [h]h:mm:ss <date>
-                    m = Regex.Match(str.Substring(0, parsed_date.IndexOfDate), @"(?<=^|[^\d])(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*([AP]M))?(?=$|[\s,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    m = Regex.Match(str.Substring(0, parsed_date.IndexOfDate), @"(?<=^|[^\d])(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[\s,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             }
             else//look anywere within string
                 //look for [h]h:mm[:ss] [PM/AM]
-                m = Regex.Match(str, @"(?<=^|\s+|\s*T\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*([AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str, @"(?<=^|\s+|\s*T\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
             if (m.Success)
             {
@@ -345,7 +345,7 @@ namespace Cliver
                             return false;
                     }
 
-                    if (string.Compare(m.Groups[4].Value, "PM", true) > -1)
+                    if (string.Compare(m.Groups["apm"].Value, "PM", true) > -1)
                         hour += 12;
 
                     DateTime date_time = new DateTime(1, 1, 1, hour, minute, second);
