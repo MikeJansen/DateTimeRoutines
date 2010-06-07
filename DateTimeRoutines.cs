@@ -232,7 +232,7 @@ namespace Cliver
         /// <returns>true if both date and time were found, else false</returns>
         static public bool TryParseDateTime(string str, DateTimeFormat default_format, out ParsedDateTime parsed_date_time)
         {
-            if (DateTimeRoutines.TryParseDateOrTime(str, DateTimeRoutines.DateTimeFormat.USA_DATE, out parsed_date_time)
+            if (DateTimeRoutines.TryParseDateOrTime(str, default_format, out parsed_date_time)
                 && parsed_date_time.IsDateFound
                 && parsed_date_time.IsTimeFound
                 )
