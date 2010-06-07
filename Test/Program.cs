@@ -89,6 +89,7 @@ namespace Cliver
             dates.Add(new DTTest(@"Expires 23rd January 2010.", new DateTime(2010, 1, 23, 0, 0, 0)));
             dates.Add(new DTTest(@"Expires January 22nd, 2010.", new DateTime(2010, 1, 22, 0, 0, 0)));
             dates.Add(new DTTest(@"Expires DEC 22, 2010.", new DateTime(2010, 12, 22, 0, 0, 0)));
+            dates.Add(new DTTest(@"Version: 1.0.0.692 6/1/2010 2:28:04 AM ", new DateTime(2010, 6, 1, 2, 28, 4)));
 
             int errors = 0;
 

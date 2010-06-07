@@ -316,14 +316,14 @@ namespace Cliver
             if (parsed_date != null && parsed_date.IndexOfDate > -1)
             {//look around the found date
                 //look for <date> [h]h:mm[:ss] [PM/AM]
-                m = Regex.Match(str.Substring(parsed_date.IndexOfDate + parsed_date.LengthOfDate), @"(?<=^\s*,?\s+|^\s*at\s*|^\s*[T\-]\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str.Substring(parsed_date.IndexOfDate + parsed_date.LengthOfDate), @"(?<=^\s*,?\s+|^\s*at\s*|^\s*[T\-]\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'ampm'AM|am|PM|pm))?(?=$|[^\d\w])", RegexOptions.Compiled);
                 if (!m.Success)
                     //look for [h]h:mm:ss <date>
-                    m = Regex.Match(str.Substring(0, parsed_date.IndexOfDate), @"(?<=^|[^\d])(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[\s,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    m = Regex.Match(str.Substring(0, parsed_date.IndexOfDate), @"(?<=^|[^\d])(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'ampm'AM|am|PM|pm))?(?=$|[\s,]+)", RegexOptions.Compiled);
             }
             else//look anywere within string
                 //look for [h]h:mm[:ss] [PM/AM]
-                m = Regex.Match(str, @"(?<=^|\s+|\s*T\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'apm'[AP]M))?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str, @"(?<=^|\s+|\s*T\s*)(?'hour'\d{1,2})\s*:\s*(?'minute'\d{2})\s*(?::\s*(?'second'\d{2}))?(?:\s*(?'ampm'AM|am|PM|pm))?(?=$|[^\d\w])", RegexOptions.Compiled);
 
             if (m.Success)
             {
@@ -345,7 +345,7 @@ namespace Cliver
                             return false;
                     }
 
-                    if (string.Compare(m.Groups["apm"].Value, "PM", true) > -1)
+                    if (string.Compare(m.Groups["ampm"].Value, "PM", true) == 0)
                         hour += 12;
 
                     DateTime date_time = new DateTime(1, 1, 1, hour, minute, second);
@@ -378,8 +378,8 @@ namespace Cliver
                 return false;
 
             //look for dd/mm/yy
-            Match m = Regex.Match(str, @"(?<=^|[^\d])(?'day'\d{1,2})\s*(?'separator'[\\/\.])+\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'year'\d{2,4})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            if (m.Success && m.Groups["year"].Value.Length != 3)
+            Match m = Regex.Match(str, @"(?<=^|[^\d])(?'day'\d{1,2})\s*(?'separator'[\\/\.])+\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'year'\d{2}|\d{4})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (m.Success)
             {
                 DateTime date;
                 if ((default_format ^ DateTimeFormat.USA_DATE) == DateTimeFormat.USA_DATE)
@@ -396,9 +396,9 @@ namespace Cliver
                 return true;
             }
 
-            //look for yy-mm-dd
-            m = Regex.Match(str, @"(?<=^|[^\d])(?'year'\d{2,4})\s*(?'separator'[\-])\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'day'\d{1,2})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            if (m.Success && m.Groups["year"].Value.Length != 3)
+            //look for [yy]yy-mm-dd
+            m = Regex.Match(str, @"(?<=^|[^\d])(?'year'\d{2}|\d{4})\s*(?'separator'[\-])\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'day'\d{1,2})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (m.Success)
             {
                 DateTime date;
                 if (!convert_to_date(int.Parse(m.Groups["year"].Value), int.Parse(m.Groups["month"].Value), int.Parse(m.Groups["day"].Value), out date))
@@ -411,7 +411,7 @@ namespace Cliver
             m = Regex.Match(str, @"(?:^|[^\d\w])(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*\s+(?'day'\d{1,2})(?:-?st|-?th|-?rd|-?nd)?\s*,?\s*(?'year'\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (!m.Success)
                 //look for dd month [yy]yy
-                m = Regex.Match(str, @"(?:^|[^\d\w:])(?'day'\d{1,2})(?:-?st\s+|-?th\s+|-?rd\s+|-?nd\s+|-|\s+)(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*(?:\s*,?\s*|-)(?:'?(?'year'\d{2})|(?'year'\d{4}))(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str, @"(?:^|[^\d\w:])(?'day'\d{1,2})(?:-?st\s+|-?th\s+|-?rd\s+|-?nd\s+|-|\s+)(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*(?:\s*,?\s*|-)'?(?'year'\d{2}|\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (!m.Success)
                 //look for yyyy month dd
                 m = Regex.Match(str, @"(?:^|[^\d\w])(?'year'\d{4})\s+(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*\s+(?'day'\d{1,2})(?:-?st|-?th|-?rd|-?nd)?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
