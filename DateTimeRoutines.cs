@@ -28,7 +28,7 @@ namespace Cliver
         /// </summary>
         /// <param name="date_time">date-time</param>
         /// <returns>seconds</returns>
-        public static uint GetSecondsSinceUnixEpoch(DateTime date_time)
+        public static uint GetSecondsSinceUnixEpoch(this DateTime date_time)
         {
             TimeSpan t = date_time - new DateTime(1970, 1, 1);
             int ss = (int)t.TotalSeconds;
