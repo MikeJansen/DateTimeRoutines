@@ -90,6 +90,8 @@ namespace Cliver
             dates.Add(new DTTest(@"Expires January 22nd, 2010.", new DateTime(2010, 1, 22, 0, 0, 0)));
             dates.Add(new DTTest(@"Expires DEC 22, 2010.", new DateTime(2010, 12, 22, 0, 0, 0)));
             dates.Add(new DTTest(@"Version: 1.0.0.692 6/1/2010 2:28:04 AM ", new DateTime(2010, 6, 1, 2, 28, 4)));
+            dates.Add(new DTTest(@"Version: 1.0.0.692 04/21/11 12:30am ", new DateTime(2011, 4, 21, 00, 30, 00)));
+            dates.Add(new DTTest(@"Version: 1.0.0.692 04/21/11 12:30pm ", new DateTime(2011, 4, 21, 12, 30, 00)));
 
             int errors = 0;
 
@@ -104,7 +106,7 @@ namespace Cliver
                 switch (test_format)
                 {
                     case TestFormat.DATE:
-                        if (DateTimeRoutines.TryParseDate(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
+                        if (date.TryParseDate(DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
                             if (t.DateTime.Year != test.answer.Year || t.DateTime.Month != test.answer.Month || t.DateTime.Day != test.answer.Day)
                             {
                                 Console.WriteLine(">>>>>> ERROR: " + t.DateTime.ToString() + " <> " + test.answer.ToString());
@@ -124,7 +126,7 @@ namespace Cliver
                         }
                         break;
                     case TestFormat.DATE_TIME:
-                        if (DateTimeRoutines.TryParseDateOrTime(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
+                        if (date.TryParseDateOrTime(DateTimeRoutines.DateTimeFormat.USA_DATE, out t))
                             if (t.DateTime != test.answer)
                             {
                                 Console.WriteLine(">>>>>> ERROR: " + t.DateTime.ToString() + " <> " + test.answer.ToString());
@@ -139,7 +141,7 @@ namespace Cliver
                         }
                         break;
                     case TestFormat.TIME:
-                        if (DateTimeRoutines.TryParseTime(date, DateTimeRoutines.DateTimeFormat.USA_DATE, out t, null))
+                        if (date.TryParseTime(DateTimeRoutines.DateTimeFormat.USA_DATE, out t, null))
                             if (t.DateTime.Hour != test.answer.Hour || t.DateTime.Minute != test.answer.Minute || t.DateTime.Second != test.answer.Second)
                             {
                                 Console.WriteLine(">>>>>> ERROR: " + t.DateTime.ToString() + " <> " + test.answer.ToString());

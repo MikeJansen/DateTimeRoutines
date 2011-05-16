@@ -145,7 +145,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="date_time">parsed date-time output</param>
         /// <returns>true if both date and time were found, else false</returns>
-        static public bool TryParseDateTime(string str, DateTimeFormat default_format, out DateTime date_time)
+        static public bool TryParseDateTime(this string str, DateTimeFormat default_format, out DateTime date_time)
         {
             ParsedDateTime parsed_date_time;
             if (!TryParseDateTime(str, default_format, out parsed_date_time))
@@ -166,7 +166,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="date_time">parsed date-time output</param>
         /// <returns>true if date and/or time was found, else false</returns>
-        static public bool TryParseDateOrTime(string str, DateTimeFormat default_format, out DateTime date_time)
+        static public bool TryParseDateOrTime(this string str, DateTimeFormat default_format, out DateTime date_time)
         {
             ParsedDateTime parsed_date_time;
             if (!TryParseDateOrTime(str, default_format, out parsed_date_time))
@@ -186,7 +186,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="time">parsed time output</param>
         /// <returns>true if time was found, else false</returns>
-        public static bool TryParseTime(string str, DateTimeFormat default_format, out DateTime time)
+        public static bool TryParseTime(this string str, DateTimeFormat default_format, out DateTime time)
         {
             ParsedDateTime parsed_time;
             if (!TryParseTime(str, default_format, out parsed_time, null))
@@ -207,7 +207,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="date">parsed date output</param>
         /// <returns>true if date was found, else false</returns>
-        static public bool TryParseDate(string str, DateTimeFormat default_format, out DateTime date)
+        static public bool TryParseDate(this string str, DateTimeFormat default_format, out DateTime date)
         {
             ParsedDateTime parsed_date;
             if (!TryParseDate(str, default_format, out parsed_date))
@@ -230,7 +230,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="parsed_date_time">parsed date-time output</param>
         /// <returns>true if both date and time were found, else false</returns>
-        static public bool TryParseDateTime(string str, DateTimeFormat default_format, out ParsedDateTime parsed_date_time)
+        static public bool TryParseDateTime(this string str, DateTimeFormat default_format, out ParsedDateTime parsed_date_time)
         {
             if (DateTimeRoutines.TryParseDateOrTime(str, default_format, out parsed_date_time)
                 && parsed_date_time.IsDateFound
@@ -250,7 +250,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="parsed_time">parsed date-time output</param>
         /// <returns>true if time was found, else false</returns>
-        static public bool TryParseTime(string str, DateTimeFormat default_format, out ParsedDateTime parsed_time)
+        static public bool TryParseTime(this string str, DateTimeFormat default_format, out ParsedDateTime parsed_time)
         {
             return TryParseTime(str, default_format, out parsed_time, null);
         }
@@ -264,7 +264,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="parsed_date_time">parsed date-time output</param>
         /// <returns>true if date or time was found, else false</returns>
-        static public bool TryParseDateOrTime(string str, DateTimeFormat default_format, out ParsedDateTime parsed_date_time)
+        static public bool TryParseDateOrTime(this string str, DateTimeFormat default_format, out ParsedDateTime parsed_date_time)
         {
             parsed_date_time = null;
 
@@ -308,7 +308,7 @@ namespace Cliver
         /// <param name="parsed_time">parsed date-time output</param>
         /// <param name="parsed_date">ParsedDateTime object if the date was found within this string, else NULL</param>
         /// <returns>true if time was found, else false</returns>
-        public static bool TryParseTime(string str, DateTimeFormat default_format, out ParsedDateTime parsed_time, ParsedDateTime parsed_date)
+        public static bool TryParseTime(this string str, DateTimeFormat default_format, out ParsedDateTime parsed_time, ParsedDateTime parsed_date)
         {
             parsed_time = null;
 
@@ -345,8 +345,10 @@ namespace Cliver
                             return false;
                     }
 
-                    if (string.Compare(m.Groups["ampm"].Value, "PM", true) == 0)
+                    if (string.Compare(m.Groups["ampm"].Value, "PM", true) == 0 && hour < 12)
                         hour += 12;
+                    else if (string.Compare(m.Groups["ampm"].Value, "AM", true) == 0 && hour == 12)
+                        hour -= 12;
 
                     DateTime date_time = new DateTime(1, 1, 1, hour, minute, second);
                     parsed_time = new ParsedDateTime(-1, -1, m.Index, m.Length, date_time);
@@ -370,7 +372,7 @@ namespace Cliver
         /// <param name="default_format">format to be used preferably in ambivalent instances</param>
         /// <param name="parsed_date">parsed date output</param>
         /// <returns>true if date was found, else false</returns>
-        static public bool TryParseDate(string str, DateTimeFormat default_format, out ParsedDateTime parsed_date)
+        static public bool TryParseDate(this string str, DateTimeFormat default_format, out ParsedDateTime parsed_date)
         {
             parsed_date = null;
 
