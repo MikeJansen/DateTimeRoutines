@@ -380,7 +380,7 @@ namespace Cliver
                 return false;
 
             //look for dd/mm/yy
-            Match m = Regex.Match(str, @"(?<=^|[^\d])(?'day'\d{1,2})\s*(?'separator'[\\/\.])+\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'year'\d{2}|\d{4})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            Match m = Regex.Match(str, @"(?<=^|[^\d])(?'day'\d{1,2})\s*(?'separator'[\\|/|\.|\s+|\-])+\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'year'\d{2}|\d{4})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (m.Success)
             {
                 DateTime date;
@@ -398,8 +398,8 @@ namespace Cliver
                 return true;
             }
 
-            //look for [yy]yy-mm-dd
-            m = Regex.Match(str, @"(?<=^|[^\d])(?'year'\d{2}|\d{4})\s*(?'separator'[\-])\s*(?'month'\d{1,2})\s*\'separator'+\s*(?'day'\d{1,2})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            //look for [yy]yy-[m]m-[d]d
+            m = Regex.Match(str, @"(?<=^|[^\d])(?'year'\d{2}|\d{4})(?'separator'[\-|\s+|\/|\.])+(?'month'\d{1,2})\'separator'+(?'day'\d{1,2})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (m.Success)
             {
                 DateTime date;
@@ -409,11 +409,22 @@ namespace Cliver
                 return true;
             }
 
+				//look for yyyy-mm-dd
+				m = Regex.Match(str, @"(?<=^|[^\d])(?'year'\d{4})(?'separator'[\-|\s+|\/|\.|])*(?'month'\d{2})\'separator'*(?'day'\d{2})(?=$|[^\d])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+				if (m.Success)
+				{
+					DateTime date;
+					if (!convert_to_date(int.Parse(m.Groups["year"].Value), int.Parse(m.Groups["month"].Value), int.Parse(m.Groups["day"].Value), out date))
+						return false;
+					parsed_date = new ParsedDateTime(m.Index, m.Length, -1, -1, date);
+					return true;
+				}
+
             //look for month dd yyyy
-            m = Regex.Match(str, @"(?:^|[^\d\w])(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*\s+(?'day'\d{1,2})(?:-?st|-?th|-?rd|-?nd)?\s*,?\s*(?'year'\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+				m = Regex.Match(str, @"(?:^|[^\d\w])(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*(?'separator'[\-|\s+|\/|\.])(?'day'\d{1,2})(?:-?st|-?th|-?rd|-?nd)?\s*,?\'separator'+(?'year'\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (!m.Success)
                 //look for dd month [yy]yy
-                m = Regex.Match(str, @"(?:^|[^\d\w:])(?'day'\d{1,2})(?:-?st\s+|-?th\s+|-?rd\s+|-?nd\s+|-|\s+)(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*(?:\s*,?\s*|-)'?(?'year'\d{2}|\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                m = Regex.Match(str, @"(?:^|[^\d\w:])(?'day'\d{1,2})(?:-?st\s+|-?th\s+|-?rd\s+|-?nd\s+|-|\s*|/|\.)(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*(?:\s*,?\s*|-|/|\.)'?(?'year'\d{2}|\d{4})(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (!m.Success)
                 //look for yyyy month dd
                 m = Regex.Match(str, @"(?:^|[^\d\w])(?'year'\d{4})\s+(?'month'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[uarychilestmbro]*\s+(?'day'\d{1,2})(?:-?st|-?th|-?rd|-?nd)?(?=$|[^\d\w])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
